@@ -4,7 +4,7 @@ class SavedWrapper extends Component {
   render() {
     return (
       <div className="SavedWrapper">
-        <div />
+        <p>Saved Wrapper</p>
       </div>
     );
   }

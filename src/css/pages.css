@@ -1,0 +1,39 @@
+.checkbox {
+    width: 25px;
+    position: relative;
+    float: right !important;
+}
+
+.checkbox label {
+    cursor: pointer;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 0;
+    left: 0;
+    background: #eee;
+    border: 1px solid #ddd;
+}
+
+.checkbox label:after {
+    opacity: 0.2;
+    content: '';
+    position: absolute;
+    width: 11px;
+    height: 8px;
+    background: transparent;
+    top: 6px;
+    left: 5px;
+    border: 3px solid red;
+    border-top: none;
+    border-right: none;
+    transform: rotate(-45deg);
+}
+
+.checkbox label:hover::after {
+    opacity: 0.5;
+}
+
+.checkbox input[type=checkbox]:checked+label:after {
+    opacity: 1;
+}

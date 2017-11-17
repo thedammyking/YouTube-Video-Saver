@@ -8,8 +8,17 @@ class SearchBar extends Component {
   }
   render() {
     return (
-      <div className="search-bar">
-        <input value={this.state.term} onChange={e => this.onInputChange(e.target.value)} />
+      <div className="search-bar  col-md-6 col-sm-12 collapse navbar-collapse">
+        <div className="input-group">
+          <input
+            onChange={e => this.onInputChange(e.target.value)}
+            value={this.state.term}
+            type="text"
+            className="form-control"
+            placeholder="Search"
+          />
+          <span className="input-group-btn" />
+        </div>
       </div>
     );
   }

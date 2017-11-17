@@ -1,0 +1,34 @@
+nav.Nav {
+    min-height: 758px;
+    padding: 33px 0;
+}
+
+.Nav .nav-link span {
+    margin-right: 24px;
+    position: relative;
+}
+
+.Nav a.nav-link {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 2.1rem;
+    margin-left: 17px;
+    color: #262626;
+    cursor: pointer
+}
+
+.Nav li.nav-item {
+    cursor: pointer
+}
+
+.Nav li.nav-item:hover,
+.active-nav {
+    background: #ddd;
+}
+
+.active-nav a span {
+    color: #FF0000;
+}

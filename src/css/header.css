@@ -1,0 +1,18 @@
+.Header {
+    height: 56px;
+    background: #fff;
+}
+
+.Header .col-md-12 {
+    flex-wrap: wrap;
+    padding: 5px 30px;
+}
+
+.Header nav .col-md-4.col-sm-12 {
+    margin-top: 8px;
+}
+
+.search-bar input.form-control {
+    border-bottom-right-radius: .25rem !important;
+    border-top-right-radius: .25rem !important;
+}
