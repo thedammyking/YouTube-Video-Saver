@@ -1,39 +1,37 @@
+.card {
+    cursor: pointer;
+}
+
 .checkbox {
+    visibility: hidden;
     width: 25px;
+    height: 25px;
+    top: -22px;
+    right: -22px;
+    z-index: 999;
+    border: 2px solid;
     position: relative;
     float: right !important;
 }
 
-.checkbox label {
-    cursor: pointer;
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    top: 0;
-    left: 0;
-    background: #eee;
-    border: 1px solid #ddd;
-}
-
-.checkbox label:after {
-    opacity: 0.2;
+.check {
     content: '';
     position: absolute;
     width: 11px;
     height: 8px;
     background: transparent;
-    top: 6px;
+    top: 5px;
     left: 5px;
-    border: 3px solid red;
+    border: 3px solid;
     border-top: none;
     border-right: none;
     transform: rotate(-45deg);
 }
 
-.checkbox label:hover::after {
-    opacity: 0.5;
+.selected {
+    border: 2px solid;
 }
 
-.checkbox input[type=checkbox]:checked+label:after {
-    opacity: 1;
+.selected .checkbox {
+    visibility: visible;
 }

@@ -6,22 +6,36 @@ import NotFound from './notfound';
 import '../css/pages.css';
 
 class Pages extends Component {
-  constructor() {
-    super();
-    this.state = {
-      savedVideos: []
-    };
-  }
-  saveVideos(ids) {
-    console.log(ids);
-  }
   render() {
     const data = { ...this.props };
     return (
       <Switch>
-        <Route exact path="/" render={() => <SearchWrapper data={data} />} />
-        <Route path="/search" render={() => <SearchWrapper saveVideos={() => this.saveVideos} data={data} />} />
-        <Route path="/saved" render={() => <SavedWrapper data={this.state.savedVideos} />} />
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <SearchWrapper
+              videos={data.videos}
+              addToSelected={data.addToSelected}
+              removeFromSelected={data.removeFromSelected}
+              selectedSearchVideos={data.selectedSearchVideos}
+              saveVideos={data.saveVideos}
+            />
+          )}
+        />
+        <Route
+          path="/saved"
+          render={() => (
+            <SavedWrapper
+              savedVideos={data.savedVideos}
+              selectedVideos={data.selectedSavedVideos}
+              addToSelected={data.addToSelected}
+              removeFromSelected={data.removeFromSelected}
+              deleteVideos={data.deleteVideos}
+              apiKey={data.apiKey}
+            />
+          )}
+        />
         <Route component={NotFound} />
       </Switch>
     );

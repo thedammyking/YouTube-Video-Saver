@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import Search from '../apiCall';
+import ytAPI from '../apiCall';
+import base from '../base';
 import Header from './header';
 import Nav from './nav';
 import Pages from './pages';
@@ -14,8 +15,15 @@ class App extends Component {
     this.state = {
       videos: [],
       pageInfo: {},
-      searchTerm: ''
+      searchTerm: '',
+      selectedSearchVideos: {},
+      selectedSavedVideos: {},
+      savedVideos: {}
     };
+    this.addToSelected = this.addToSelected.bind(this);
+    this.removeFromSelected = this.removeFromSelected.bind(this);
+    this.saveVideos = this.saveVideos.bind(this);
+    this.deleteVideos = this.deleteVideos.bind(this);
   }
   videoSearch(term) {
     this.setState({
@@ -29,19 +37,121 @@ class App extends Component {
       key: API_KEY
     };
 
-    Search('search', 'GET', opts, (err, results, pageInfo) => {
+    ytAPI('search', 'GET', opts, (err, results, pageInfo) => {
       if (err) return console.log(err);
       this.setState({
         videos: results,
         pageInfo: pageInfo
       });
     });
+    localStorage.clear();
+    this.setState({
+      selectedSearchVideos: {},
+      selectedSavedVideos: {}
+    });
+  }
+  componentWillMount() {
+    base.syncState('saved_videos/videos', {
+      context: this,
+      state: 'savedVideos',
+      asObject: true
+    });
+    const localStorageSearchRef = localStorage.getItem(`selected_search_videos`);
+    const localStorageSavedRef = localStorage.getItem(`selected_saved_videos`);
+
+    if (localStorageSearchRef) {
+      this.setState({
+        selectedSearchVideos: JSON.parse(localStorageSearchRef)
+      });
+    } else if (localStorageSavedRef) {
+      this.setState({
+        selectedSavedVideos: JSON.parse(localStorageSavedRef)
+      });
+    }
+  }
+  componentWillUpdate(nextProps, nextState) {
+    localStorage.setItem(`selected_search_videos`, JSON.stringify(nextState.selectedSearchVideos));
+    localStorage.setItem(`selected_saved_videos`, JSON.stringify(nextState.selectedSavedVideos));
+  }
+  addToSelected(id, type) {
+    switch (type) {
+      case 'search':
+        const selectedSearchVideos = { ...this.state.selectedSearchVideos };
+        selectedSearchVideos[`video${id}`] = id;
+        this.setState({
+          selectedSearchVideos: selectedSearchVideos
+        });
+        console.log(`Adding ${id}`);
+        break;
+      case 'saved':
+        const selectedSavedVideos = { ...this.state.selectedSavedVideos };
+        selectedSavedVideos[`video${id}`] = id;
+        this.setState({
+          selectedSavedVideos: selectedSavedVideos
+        });
+        console.log(`Adding ${id}`);
+        break;
+      default:
+        break;
+    }
+  }
+  removeFromSelected(id, type) {
+    switch (type) {
+      case 'search':
+        const selectedSearchVideos = { ...this.state.selectedSearchVideos };
+        delete selectedSearchVideos[`video${id}`];
+        this.setState({
+          selectedSearchVideos: selectedSearchVideos
+        });
+        console.log(`Removing ${id}`);
+        break;
+      case 'saved':
+        const selectedSavedVideos = { ...this.state.selectedSavedVideos };
+        delete selectedSavedVideos[`video${id}`];
+        this.setState({
+          selectedVideos: selectedSavedVideos
+        });
+        console.log(`Removing ${id}`);
+        break;
+      default:
+        break;
+    }
+  }
+  saveVideos(e) {
+    e.preventDefault();
+    Object.keys(this.state.selectedSearchVideos).map(key => {
+      const opts = {
+        id: this.state.selectedSearchVideos[key],
+        key: API_KEY,
+        part: 'snippet,contentDetails,statistics'
+      };
+
+      ytAPI('videos', 'GET', opts, (err, results, pageInfo, contentDetails) => {
+        if (err) return console.log(err);
+        this.processSave(key, results, contentDetails);
+      });
+      return '';
+    });
+  }
+  processSave(key, results, contentDetails) {
+    const savedVideos = { ...this.state.savedVideos };
+    savedVideos[key] = {
+      id: this.state.selectedSearchVideos[key],
+      title: results[0].title,
+      thumbnails: results[0].thumbnails,
+      duration: contentDetails[0].duration
+    };
+    this.setState({ savedVideos });
+  }
+  deleteVideos(e) {
+    return '';
   }
   render() {
+    console.log(this.state.savedVideos);
     const videoSearch = _.debounce(term => {
       this.videoSearch(term);
     }, 500);
-    const { videos, pageInfo, searchTerm } = this.state;
+    const { videos, pageInfo, searchTerm, selectedSearchVideos, selectedSavedVideos, savedVideos } = this.state;
     return (
       <div className="App container">
         <div className="row">
@@ -51,7 +161,19 @@ class App extends Component {
           <div className="col-md-12">
             <div className="row">
               <Nav />
-              <Pages apiKey={API_KEY} term={searchTerm} videos={videos} pageInfo={pageInfo} />
+              <Pages
+                apiKey={API_KEY}
+                term={searchTerm}
+                videos={videos}
+                addToSelected={this.addToSelected}
+                removeFromSelected={this.removeFromSelected}
+                selectedSearchVideos={selectedSearchVideos}
+                selectedSavedVideos={selectedSavedVideos}
+                savedVideos={savedVideos}
+                saveVideos={this.saveVideos}
+                deleteVideos={this.deleteVideos}
+                pageInfo={pageInfo}
+              />
             </div>
           </div>
         </div>

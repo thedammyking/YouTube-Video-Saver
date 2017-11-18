@@ -11,7 +11,9 @@ class SearchBar extends Component {
       <div className="search-bar  col-md-6 col-sm-12 collapse navbar-collapse">
         <div className="input-group">
           <input
-            onChange={e => this.onInputChange(e.target.value)}
+            onChange={e => {
+              this.onInputChange(e.target.value);
+            }}
             value={this.state.term}
             type="text"
             className="form-control"

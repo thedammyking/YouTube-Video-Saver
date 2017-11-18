@@ -1,16 +1,48 @@
 import React, { Component } from 'react';
-// import Video from '../apiCall';
-
 class SearchWrapper extends Component {
+  selectVideo(id) {
+    if (this.props.selectedSearchVideos[`video${id}`]) {
+      this.props.removeFromSelected(id, 'search');
+    } else {
+      this.props.addToSelected(id, 'search');
+    }
+  }
+  isEmpty(obj) {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) return false;
+    }
+    return true;
+  }
   render() {
+    let saveButton = '';
+    if (!this.isEmpty(this.props.videos) && !this.isEmpty(this.props.selectedSearchVideos)) {
+      saveButton = (
+        <button type="submit">
+          <i className="fa fa-floppy-o" aria-hidden="true" />
+          <span>Save</span>
+          <span>{Object.keys(this.props.selectedSearchVideos).length}</span>
+        </button>
+      );
+    }
     return (
       <div className="SearchWrapper col-md 9">
         <div className="row">
           <div className="col-md-12">
-            <form onSubmit={this.props.saveVideos}>
-              {this.props.data.videos.map(key => {
+            <form onSubmit={e => this.props.saveVideos(e)}>
+              {this.props.videos.map(key => {
+                let eleClass = '';
+                if (this.props.selectedSearchVideos[`video${key.id}`] === key.id) {
+                  eleClass = 'card selected';
+                }
                 return (
-                  <div key={key.id} className="card">
+                  <div
+                    id={`card${key.id}`}
+                    key={key.id}
+                    className={eleClass || 'card'}
+                    onClick={() => {
+                      this.selectVideo(key.id);
+                    }}
+                  >
                     <div className="card-block">
                       <div className="checkbox">
                         <div className="check" />
@@ -28,6 +60,7 @@ class SearchWrapper extends Component {
                   </div>
                 );
               })}
+              {saveButton}
             </form>
           </div>
         </div>

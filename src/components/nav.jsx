@@ -10,9 +10,9 @@ const Nav = props => {
           onClick={e => {
             activateLink(e);
           }}
-          className="nav-item"
+          className="active-nav nav-item"
         >
-          <Link to="/search" className="nav-link">
+          <Link to="/" className="nav-link">
             <span>
               <i className="fa fa-search" aria-hidden="true" />
             </span>Search
