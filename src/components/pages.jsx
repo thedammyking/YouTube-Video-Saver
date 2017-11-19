@@ -19,6 +19,7 @@ class Pages extends Component {
               addToSelected={data.addToSelected}
               removeFromSelected={data.removeFromSelected}
               selectedSearchVideos={data.selectedSearchVideos}
+              savedVideos={data.savedVideos}
               saveVideos={data.saveVideos}
             />
           )}

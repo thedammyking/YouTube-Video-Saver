@@ -18,7 +18,7 @@ class App extends Component {
       searchTerm: '',
       selectedSearchVideos: {},
       selectedSavedVideos: {},
-      savedVideos: {}
+      savedVideos: []
     };
     this.addToSelected = this.addToSelected.bind(this);
     this.removeFromSelected = this.removeFromSelected.bind(this);
@@ -54,7 +54,7 @@ class App extends Component {
     base.syncState('saved_videos/videos', {
       context: this,
       state: 'savedVideos',
-      asObject: true
+      asArray: true
     });
     const localStorageSearchRef = localStorage.getItem(`selected_search_videos`);
     const localStorageSavedRef = localStorage.getItem(`selected_saved_videos`);
@@ -134,7 +134,7 @@ class App extends Component {
     });
   }
   processSave(key, results, contentDetails) {
-    const savedVideos = { ...this.state.savedVideos };
+    const savedVideos = [...this.state.savedVideos];
     savedVideos[key] = {
       id: this.state.selectedSearchVideos[key],
       title: results[0].title,
@@ -147,7 +147,6 @@ class App extends Component {
     return '';
   }
   render() {
-    console.log(this.state.savedVideos);
     const videoSearch = _.debounce(term => {
       this.videoSearch(term);
     }, 500);
