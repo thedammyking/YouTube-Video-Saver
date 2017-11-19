@@ -6,7 +6,7 @@ import Header from './header';
 import Nav from './nav';
 import Pages from './pages';
 import '../css/App.css';
-const API_KEY = 'AIzaSyBQQOXU-V7YcFDSd4wjgVJ713UtgppGPbs';
+const API_KEY = 'AIzaSyBpDCFTdhUyY3hUH-A3AhHdcNXaU9H6Ksw';
 
 class App extends Component {
   constructor(props) {
