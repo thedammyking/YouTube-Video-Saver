@@ -1,39 +1,71 @@
 import React, { Component } from 'react';
 
 class SavedWrapper extends Component {
+  selectVideo(id) {
+    if (this.props.selectedSavedVideos[`video${id}`]) {
+      this.props.removeFromSelected(id, 'saved');
+    } else {
+      this.props.addToSelected(id, 'saved');
+    }
+  }
+  isEmpty(obj) {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) return false;
+    }
+    return true;
+  }
   render() {
+    console.log(this.props.selectedSavedVideos);
+    let deleteButton = '';
+    if (!this.isEmpty(this.props.savedVideos) && !this.isEmpty(this.props.selectedSavedVideos)) {
+      deleteButton = (
+        <button className="delete_btn btn btn-danger" type="submit">
+          <i className="fa fa-floppy-o" aria-hidden="true" />
+          <span>Delete</span>
+          <span className="count">{Object.keys(this.props.selectedSavedVideos).length}</span>
+        </button>
+      );
+    }
     return (
-      <div className="SavedhWrapper col-md 9">
+      <div className="SavedWrapper col-md 9">
         <div className="row">
           <div className="col-md-12">
             <form onSubmit={e => this.props.deleteVideos(e)}>
-              {this.props.savedVideos.reverse().map(key => {
-                let url = `
-                  https://content.googleapis.com/youtube/v3/videos?id=${key.id}&key=${this.props
-                  .apiKey}&part=snippet%2CcontentDetails%2Cstatistics`;
-                fetch(url)
-                  .then(resp => resp.json()) // Transform the data into json
-                  .then(data => data.items[0].snippet)
-                  .then(snippet => {
-                    const cardBlock = `<div class="card-block">
-                        <div class="checkbox">
-                          <div class="check"></div>
+              {Object.keys(this.props.savedVideos)
+                .reverse()
+                .map(key => {
+                  const video = this.props.savedVideos;
+                  let eleClass = '';
+                  if (this.props.selectedSavedVideos[`video${video[key].id}`] === video[key].id) {
+                    eleClass = 'card selected';
+                  }
+                  return (
+                    <div
+                      id={`card${video[key].id}`}
+                      key={video[key].id}
+                      className={eleClass || 'card'}
+                      onClick={() => {
+                        this.selectVideo(video[key].id);
+                      }}
+                    >
+                      <div className="card-block">
+                        <div className="checkbox">
+                          <div className="check" />
                         </div>
-                        <div class="row">
-                          <div class="col-md-5">
-                            <img src=${snippet.thumbnails.medium.url} alt="" />
+                        <div className="row">
+                          <div className="col-md-5">
+                            <img src={video[key].thumbnails.medium.url} alt="" />
                           </div>
-                          <div class="col-md-7">
-                            <h4 class="card-title">${snippet.title}</h4>
-                            <p class="card-text">${snippet.description}</p>
+                          <div className="col-md-7">
+                            <h4 className="card-title">{video[key].title}</h4>
+                            <p className="card-text">{video[key].description}</p>
                           </div>
                         </div>
-                      </div>`;
-                    let card = document.querySelector(`#card${key.id}`);
-                    card.innerHTML = cardBlock;
-                  });
-                return <div id={`card${key.id}`} key={key.id} className="card" />;
-              })}
+                      </div>
+                    </div>
+                  );
+                })}
+              {deleteButton}
             </form>
           </div>
         </div>

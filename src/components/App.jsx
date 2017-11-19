@@ -6,7 +6,7 @@ import Header from './header';
 import Nav from './nav';
 import Pages from './pages';
 import '../css/App.css';
-const API_KEY = 'AIzaSyBpDCFTdhUyY3hUH-A3AhHdcNXaU9H6Ksw';
+const API_KEY = 'AIzaSyBQQOXU-V7YcFDSd4wjgVJ713UtgppGPbs';
 
 class App extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class App extends Component {
       searchTerm: '',
       selectedSearchVideos: {},
       selectedSavedVideos: {},
-      savedVideos: []
+      savedVideos: {}
     };
     this.addToSelected = this.addToSelected.bind(this);
     this.removeFromSelected = this.removeFromSelected.bind(this);
@@ -54,7 +54,7 @@ class App extends Component {
     base.syncState('saved_videos/videos', {
       context: this,
       state: 'savedVideos',
-      asArray: true
+      asObject: true
     });
     const localStorageSearchRef = localStorage.getItem(`selected_search_videos`);
     const localStorageSavedRef = localStorage.getItem(`selected_saved_videos`);
@@ -109,7 +109,7 @@ class App extends Component {
         const selectedSavedVideos = { ...this.state.selectedSavedVideos };
         delete selectedSavedVideos[`video${id}`];
         this.setState({
-          selectedVideos: selectedSavedVideos
+          selectedSavedVideos: selectedSavedVideos
         });
         console.log(`Removing ${id}`);
         break;
@@ -134,17 +134,35 @@ class App extends Component {
     });
   }
   processSave(key, results, contentDetails) {
-    const savedVideos = [...this.state.savedVideos];
+    const savedVideos = { ...this.state.savedVideos };
     savedVideos[key] = {
       id: this.state.selectedSearchVideos[key],
       title: results[0].title,
+      description: results[0].description,
       thumbnails: results[0].thumbnails,
       duration: contentDetails[0].duration
     };
-    this.setState({ savedVideos });
+    this.setState({
+      savedVideos
+    });
+    localStorage.clear();
   }
   deleteVideos(e) {
-    return '';
+    e.preventDefault();
+    Object.keys(this.state.selectedSavedVideos).map(key => {
+      _.debounce(() => {
+        const savedVideos = { ...this.state.savedVideos };
+        savedVideos[key] = null;
+        this.setState({
+          savedVideos,
+          selectedSavedVideos: {}
+        });
+        localStorage.clear();
+        console.log(savedVideos);
+        console.log(this.state.savedVideos);
+      }, 500)();
+      return '';
+    });
   }
   render() {
     const videoSearch = _.debounce(term => {

@@ -29,7 +29,7 @@ class Pages extends Component {
           render={() => (
             <SavedWrapper
               savedVideos={data.savedVideos}
-              selectedVideos={data.selectedSavedVideos}
+              selectedSavedVideos={data.selectedSavedVideos}
               addToSelected={data.addToSelected}
               removeFromSelected={data.removeFromSelected}
               deleteVideos={data.deleteVideos}

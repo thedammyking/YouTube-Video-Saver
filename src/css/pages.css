@@ -1,5 +1,10 @@
 .card {
     cursor: pointer;
+    margin: 20px auto;
+}
+
+img {
+    width: 100%
 }
 
 .checkbox {
@@ -14,7 +19,61 @@
     float: right !important;
 }
 
-.check {
+.selected {
+    border: 2px solid;
+}
+
+.selected .checkbox {
+    visibility: visible;
+}
+
+button.delete_btn.btn.btn-danger,
+button.save_btn.btn.btn-success {
+    position: fixed;
+    z-index: 999;
+    bottom: 56px;
+    right: 320px;
+    width: 190px;
+    height: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.delete_btn i.fa.fa-floppy-o,
+.save_btn i.fa.fa-floppy-o {
+    margin-right: 17px;
+}
+
+button.delete_btn.btn.btn-danger {
+    background: #FF0000;
+}
+
+.delete_btn span.count {
+    color: #FF0000;
+    background: #fff;
+    padding: 4px 12px;
+    border-radius: 36px;
+    margin-left: 11px;
+}
+
+.save_btn span.count {
+    color: #449d44;
+    background: #fff;
+    padding: 4px 12px;
+    border-radius: 36px;
+    margin-left: 11px;
+}
+
+.SearchWrapper .selected {
+    border: 2px solid #449d44;
+}
+
+.SavedWrapper .selected {
+    border: 2px solid #FF0000;
+}
+
+.SearchWrapper .selected .checkbox .check {
     content: '';
     position: absolute;
     width: 11px;
@@ -22,16 +81,41 @@
     background: transparent;
     top: 5px;
     left: 5px;
-    border: 3px solid;
+    border: 3px solid #449d44;
     border-top: none;
     border-right: none;
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
 
-.selected {
-    border: 2px solid;
+.SavedWrapper .selected .checkbox .check {
+    content: '';
+    position: absolute;
+    width: 11px;
+    height: 8px;
+    background: transparent;
+    top: 5px;
+    left: 5px;
+    border: 3px solid #FF0000;
+    border-top: none;
+    border-right: none;
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
 }
 
-.selected .checkbox {
-    visibility: visible;
+.SearchWrapper .selected .checkbox {
+    border: 2px solid #449d44;
+}
+
+.SavedWrapper .selected .checkbox {
+    border: 2px solid #FF0000;
+}
+
+.SearchWrapper,
+.SavedWrapper {
+    height: 758px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }

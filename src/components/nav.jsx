@@ -4,7 +4,7 @@ import '../css/nav.css';
 
 const Nav = props => {
   return (
-    <nav className="Nav col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+    <nav className="Nav col-md-3 hidden-xs-down bg-faded sidebar">
       <ul className="nav nav-pills flex-column">
         <li
           onClick={e => {

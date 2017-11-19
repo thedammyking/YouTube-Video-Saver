@@ -17,15 +17,15 @@ class SearchWrapper extends Component {
     let saveButton = '';
     if (!this.isEmpty(this.props.videos) && !this.isEmpty(this.props.selectedSearchVideos)) {
       saveButton = (
-        <button type="submit">
+        <button className="save_btn btn btn-success" type="submit">
           <i className="fa fa-floppy-o" aria-hidden="true" />
           <span>Save</span>
-          <span>{Object.keys(this.props.selectedSearchVideos).length}</span>
+          <span className="count">{Object.keys(this.props.selectedSearchVideos).length}</span>
         </button>
       );
     }
     return (
-      <div className="SearchWrapper col-md 9">
+      <div className="SearchWrapper col-md-9">
         <div className="row">
           <div className="col-md-12">
             <form onSubmit={e => this.props.saveVideos(e)}>
