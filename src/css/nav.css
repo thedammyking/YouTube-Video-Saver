@@ -1,5 +1,4 @@
 nav.Nav {
-    height: 758px;
     padding: 33px 0;
 }
 
@@ -17,11 +16,11 @@ nav.Nav {
     line-height: 2.1rem;
     margin-left: 17px;
     color: #262626;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .Nav li.nav-item {
-    cursor: pointer
+    cursor: pointer;
 }
 
 .Nav li.nav-item:hover,
@@ -30,5 +29,5 @@ nav.Nav {
 }
 
 .active-nav a span {
-    color: #FF0000;
+    color: #ff0000;
 }

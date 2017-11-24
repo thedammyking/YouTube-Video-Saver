@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import ytAPI from '../apiCall';
+import { ytAPI, notify } from '../apiCall';
 import base from '../base';
 import Header from './header';
 import Nav from './nav';
@@ -18,7 +18,8 @@ class App extends Component {
       searchTerm: '',
       selectedSearchVideos: {},
       selectedSavedVideos: {},
-      savedVideos: {}
+      savedVideos: {},
+      toNotify: {}
     };
     this.addToSelected = this.addToSelected.bind(this);
     this.removeFromSelected = this.removeFromSelected.bind(this);
@@ -56,6 +57,7 @@ class App extends Component {
       state: 'savedVideos',
       asObject: true
     });
+
     const localStorageSearchRef = localStorage.getItem(`selected_search_videos`);
     const localStorageSavedRef = localStorage.getItem(`selected_saved_videos`);
 
@@ -135,6 +137,7 @@ class App extends Component {
   }
   processSave(key, results, contentDetails) {
     const savedVideos = { ...this.state.savedVideos };
+    const toNotify = { ...this.state.toNotify };
     savedVideos[key] = {
       id: this.state.selectedSearchVideos[key],
       title: results[0].title,
@@ -142,10 +145,27 @@ class App extends Component {
       thumbnails: results[0].thumbnails,
       duration: contentDetails[0].duration
     };
+    toNotify[key] = {
+      id: this.state.selectedSearchVideos[key],
+      title: results[0].title,
+      description: results[0].description,
+      thumbnails: results[0].thumbnails,
+      duration: contentDetails[0].duration
+    };
     this.setState({
-      savedVideos
+      savedVideos,
+      toNotify
     });
-    localStorage.clear();
+    if (Object.keys(this.state.selectedSearchVideos).length === Object.keys(this.state.toNotify).length) {
+      notify(this.state.toNotify);
+      _.debounce(() => {
+        this.setState({
+          toNotify: {},
+          selectedSearchVideos: {}
+        });
+        localStorage.clear();
+      }, 500)();
+    }
   }
   deleteVideos(e) {
     e.preventDefault();
@@ -158,8 +178,6 @@ class App extends Component {
           selectedSavedVideos: {}
         });
         localStorage.clear();
-        console.log(savedVideos);
-        console.log(this.state.savedVideos);
       }, 500)();
       return '';
     });

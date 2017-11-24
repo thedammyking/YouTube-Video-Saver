@@ -15,7 +15,6 @@ class SavedWrapper extends Component {
     return true;
   }
   render() {
-    console.log(this.props.selectedSavedVideos);
     let deleteButton = '';
     if (!this.isEmpty(this.props.savedVideos) && !this.isEmpty(this.props.selectedSavedVideos)) {
       deleteButton = (

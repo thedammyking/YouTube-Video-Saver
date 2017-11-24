@@ -3,7 +3,7 @@ var xhr = require('xhr');
 
 if (!xhr.open) xhr = require('request');
 
-module.exports = function(resourceType, requestType, opts, cb) {
+const ytAPI = function(resourceType, requestType, opts, cb) {
     xhr({
             url: 'https://content.googleapis.com/youtube/v3/' + resourceType + '?' + querystring.stringify(opts),
             method: requestType
@@ -67,4 +67,26 @@ module.exports = function(resourceType, requestType, opts, cb) {
             }
         }
     );
+};
+
+const notify = videos => {
+    let videosJSON = JSON.stringify(videos);
+
+    xhr({
+            body: videosJSON,
+            method: 'POST',
+            url: 'https://adonis-app-garjleuroa.now.sh/push',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        },
+        function(err, resp, body) {
+            if (err) console.log(err);
+        }
+    );
+};
+
+module.exports = {
+    ytAPI: ytAPI,
+    notify: notify
 };

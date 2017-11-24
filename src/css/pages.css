@@ -4,7 +4,7 @@
 }
 
 img {
-    width: 100%
+    width: 100%;
 }
 
 .checkbox {
@@ -46,11 +46,11 @@ button.save_btn.btn.btn-success {
 }
 
 button.delete_btn.btn.btn-danger {
-    background: #FF0000;
+    background: #ff0000;
 }
 
 .delete_btn span.count {
-    color: #FF0000;
+    color: #ff0000;
     background: #fff;
     padding: 4px 12px;
     border-radius: 36px;
@@ -70,7 +70,7 @@ button.delete_btn.btn.btn-danger {
 }
 
 .SavedWrapper .selected {
-    border: 2px solid #FF0000;
+    border: 2px solid #ff0000;
 }
 
 .SearchWrapper .selected .checkbox .check {
@@ -97,7 +97,7 @@ button.delete_btn.btn.btn-danger {
     background: transparent;
     top: 5px;
     left: 5px;
-    border: 3px solid #FF0000;
+    border: 3px solid #ff0000;
     border-top: none;
     border-right: none;
     -webkit-transform: rotate(-45deg);
@@ -110,12 +110,12 @@ button.delete_btn.btn.btn-danger {
 }
 
 .SavedWrapper .selected .checkbox {
-    border: 2px solid #FF0000;
+    border: 2px solid #ff0000;
 }
 
 .SearchWrapper,
 .SavedWrapper {
-    height: 758px;
+    height: 595px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
